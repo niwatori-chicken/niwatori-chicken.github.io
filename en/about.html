@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>niwatori-chickenのサイト</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header>
+        <h1>niwatori-chicken's website</h1>
+        <nav>
+            <table class="center" width="100%" border="1">
+                <tbody>
+                    <tr>
+                        <td align="center" width="30%"><a href="index.html">Main page</a></td>
+                        <td align="center" width="30%"><a href="crafts.html">Crafting</a></td>
+                        <td align="center" width="30%"><a href="scrapbooks.html">Scrapbooks</a></td>
+                        <td align="center" rowspan="2">
+                            <a href="index.html" id="switch-mode">
+                                <img src="imgs/essentials/switchmode.jpg" alt="switch dark/light mode" title="Switch between light and dark mode" class="exclude-dark" width="48px">
+                            </a>
+                        </td>
+                        <td width align="center" rowspan="2">
+                            <a href="../index.html">
+                                <img src="imgs/essentials/ja.jpg" alt="Jump to Japanese site" title="Japanese site" width="48px">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" width="30%"><a href="downloads.html">Downloads</a></td>
+                        <td align="center" width="30%"><a href="bbs.html">BBS</a></td>
+                        <td align="center" width="30%"><a href="about.html">About</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        <h2 class="center">About this site</h2>
+        <p>
+            Thank you for visiting my site. <br>
+            I put this site my works. <br>
+            It's so lightweight, probably it works at any environment. <br>
+            Feel free to link to my site. <br>
+            for mutual links, please contact me.<br><br>
+        </p>
+        <h2 class="center">About owner(niwatori-chicken)</h2>
+        <p>
+            I'm student who living in Japan. <br><br>
+            In 2017, I was an elementary school student, I was doing visual programming(Scratch). in 2019, I began using Linux on stale PC abandoned in my house.
+            Then I got my own development environment, but I'm not skilled well. <br><br>
+            I do python little bit, C++, and Linux. <br>
+            Really lately, I also doing RISC-V development. <br><br>
+            I like PC building too(However, it's expensive hobby). <br>
+            I don't know much about web-based systems, so this is a bit tasteless, but please help me out.<br><br>
+        </p>
+        <h3>Contact</h3>
+        <p>If you have question about this site or owner, please send mail to niwatorichicken256★gmail.com. (Please replace ★ with @.)</p>
+        <p>(or contact me directly if you know my private contacts)</p>
+    </main>
+
+
+    <footer>
+        <br><br>
+        <hr>
+        <br>
+        <font size="2">
+            <a href="index.html">Main page</a>
+            <a href="crafts.html">Crafting</a>
+            <a href="scrapbooks.html">Scrapbooks</a>
+            <br>
+            <a href="downloads.html">Downloads</a>
+            <a href="bbs.html">BBS</a>
+            <a href="about.html">About</a>
+            <br>
+            <a href="../index.html">Japanese site</a>
+            <br>
+            <p>© 2024 niwatori-chicken. All rights reserved.</p>
+        </font>
+        <br>
+    </footer>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            console.log(params.toString() === "")
+            return params;
+        }
+
+        function applyDarkMode() {
+            const params = getQueryParams();
+            if (params.get('mode') === 'dark') {
+                document.body.classList.add('dark-mode');
+                const links = document.querySelectorAll('a:not(.exclude-dark)');
+                links.forEach(link => {
+                    const url = new URL(link.href);
+                    url.searchParams.set('mode', 'dark');
+                    link.href = url.toString();
+                });
+                document.getElementById('switch-mode').href = location.href.replace("?mode=dark", "");
+
+            }
+            else if (params.toString() === "") {
+                document.getElementById('switch-mode').href = location.href + "?mode=dark";
+            }
+        }
+
+        applyDarkMode();
+    </script>
+
+</body>
+</html>
