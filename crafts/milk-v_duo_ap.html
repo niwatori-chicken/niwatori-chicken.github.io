@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>niwatori-chickenのサイト</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="crafts_code.css">
+</head>
+<body>
+    <header>
+        <h1>niwatori-chicken's website</h1>
+        <nav>
+            <table class="center" width="100%" border="1">
+                <tbody>
+                    <tr>
+                        <td align="center" width="30%"><a href="../index.html">メインページ</a></td>
+                        <td align="center" width="30%"><a href="../crafts.html">もの作り</a></td>
+                        <td align="center" width="30%"><a href="../scrapbooks.html">スクラップブック</a></td>
+                        <td align="center" rowspan="2">
+                            <a href="../index.html" id="switch-mode">
+                                <img src="../imgs/essentials/switchmode.jpg" alt="モード切替" title="ダークモードとライトモードの切り替え" class="exclude-dark" width="48px">
+                            </a>
+                        </td>
+                        <td width align="center" rowspan="2">
+                            <a href="../en/index.html">
+                                <img src="../imgs/essentials/en.jpg" alt="Jump to English site" title="English site" width="48px">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" width="30%"><a href="../downloads.html">ダウンロード</a></td>
+                        <td align="center" width="30%"><a href="../bbs.html">BBS</a></td>
+                        <td align="center" width="30%"><a href="../about.html">このサイトについて</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+
+        <h2>Milk-V DuoをWiFiアクセスポイントモードで動作させる</h2>
+
+        <br>
+
+        <img src="../imgs/duo-ap.jpg" alt="Milk-V Duo as a Wi-Fi access point">
+
+        <p>Milk-V DuoはShenzhen MilkV Technology Co., Ltd.が販売するRISC-V CPUを搭載する超小型のLinuxシングルボードコンピュータです。</p>
+
+        <br>
+
+        <h3>機材</h3>
+        <hr>
+        <p>筆者が使用した機材は以下のとおりです。お使いの機材やソフトウェアに合わせて読み替えてください。</p>
+
+        <table width="100%" border="1">
+            <tbody>
+                <tr class="center">
+                    <td width="33%">名前</td>
+                    <td width="33%">URL</td>
+                    <td width="33%">備考</td>
+                </tr>
+                <tr class="center">
+                    <td width="33%">Ubuntu 22.04 LTS</td>
+                    <td width="33%"><a href="https://jp.ubuntu.com/">https://jp.ubuntu.com/</a></td>
+                    <td width="33%">ビルドするPCのOS</td>
+                </tr>
+                <tr class="center">
+                    <td width="33%">Milk-V Duo</td>
+                    <td width="33%"><a href="https://milkv.io/duo">https://milkv.io/duo</a></td>
+                    <td width="33%"></td>
+                </tr>
+                <tr class="center">
+                    <td width="33%">IO Board</td>
+                    <td width="33%"><a href="https://milkv.io/docs/duo/io-board/usb-ethernet-iob">https://milkv.io/docs/duo/io-board/usb-ethernet-iob</a></td>
+                    <td width="33%">ドキュメントを参考にIO BoardのUSBを有効にしておきます。</td>
+                </tr>
+                <tr class="center">
+                    <td width="33%">TP-Link TL-W725N</td>
+                    <td width="33%"><a href="https://www.tp-link.com/jp/home-networking/adapter/tl-wn725n/">https://www.tp-link.com/jp/home-networking/adapter/tl-wn725n/</a></td>
+                    <td width="33%">内蔵チップはRTL8188EU。他のRTL8188EU搭載ドングルでも同一ドライバで問題なく動作。</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        
+        <h3>ソフトウェアの準備</h3>
+        <hr>
+        <br>
+        <h3>Buildroot SDKの準備</h3>
+        <hr>
+        <p>公式のgithubリポジトリからBuildroot SDKをクローンします。(この辺は、<a href="https://milkv.io/docs/duo/getting-started/buildroot-sdk">公式のドキュメント</a>でも説明されています)</p>
+        
+        <p><a href="https://qiita.com/niwatori_chicken/items/ff010f27906dd3a5a9a3#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E5%85%A5%E3%82%8C%E3%81%A6%E3%81%BF%E3%82%8B">こちらを</a>参照の上、hostapdとdnsmasqを導入しておきMicroSDカードに書き込んでおきます。</p>
+
+        <br>
+        
+
+        <h3>Wi-Fiドライバの準備</h3>
+        <hr>
+        
+        <p>筆者は<a href="https://github.com/ivanovborislav/rtl8188eu">このドライバ</a>を使いました</p>
+
+        <p>クローンして、そのディレクトリに入ります。</p>
+        <p>makeでビルドします。</p>
+
+        <pre><code>make ARCH=riscv CROSS_COMPILE=/path/to/sdk/duo-buildroot-sdk/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl- KSRC=/path/to/sdk/duo-buildroot-sdk/linux_5.10/build/cv1800b_milkv_duo_sd -j$(nproc)</code></pre>
+        
+        <p>成功するとドライバのディレクトリに8188eu.koとその他複数のファイルが生成されます。</p>
+        <br>
+        
+        <h3>OS側の準備</h3>
+        <hr>
+        <p>Buildrootを書き込んだSDカードをPCに挿入します。</p>
+        <p>rootfsをマウントし、その下のmnt/system/koにさっき生み出した8188eu.koをコピーします。</p>
+        <br>
+        
+        <h4>ネットワーク情報の記述</h4>
+        <hr>
+        <p>rootfs/etc/hostapd.confを編集。</p>
+
+        <pre class="no-pre-space"><code>ctrl_interface=/var/run/hostapd
+        ctrl_interface_group=0
+        interface=wlan0
+        driver=nl80211
+        country_code=JP #居住国に合わせて変更
+        ssid=設定したいSSID
+        hw_mode=g
+        channel=11
+        macaddr_acl=0
+        auth_algs=1
+        ignore_broadcast_ssid=0
+        wpa=2 #セキュリティを設定しない場合この行は消す
+        wpa_key_mgmt=WPA-PSK #セキュリティを設定しない場合この行は消す
+        rsn_pairwise=CCMP #セキュリティを設定しない場合この行は消す
+        wpa_passphrase=設定したいパスワード #セキュリティを設定しない場合この行は消す</code></pre>
+        <br>
+
+        <p>rootfs/etc/dnsmasq.confを編集。</p>
+        <p>以下を追記しておきます。</p>
+        <p>今回はIPアドレスをAPを192.168.32.1で、DHCPは192.168.32.2起点で192.168.32.100までを払い出すようにしています。</p>
+        <pre><code>interface=wlan0<br>dhcp-range=192.168.32.2,192.168.32.100,255.255.255.0,12h</code></pre>
+        <br>
+
+            
+        <p>rootfs/etc/dhcpd.confを編集。</p>
+        <p>以下を追記しておきます。</p>
+        <pre><code>interface wlan0<br> static ip_address=192.168.32.1/24</code></pre>
+        <br>
+
+
+        <p>rootfs/etc/network/interfacesを編集。</p>
+        <p>以下を追記しておきます。</p>
+        <pre><code>iface wlan0 inet static<br> address 192.168.32.1/24<br> gateway 192.168.32.1</code></pre>
+        <br>
+
+        
+        <p>この辺の設定はあくまで一例です。希望の設定になるように変更してください。</p>
+        <br>
+        
+        <h3>自動起動の設定</h3>
+
+        <hr>
+    
+        <h4>ドライバの自動挿入</h4>
+        <p>/mnt/system/ko/loadsystemko.sh上方に以下を追記</p>
+
+        <pre><code>insmod /mnt/system/ko/8188eu.ko</code></pre>
+
+        <br>
+        
+        <h4>hostapdの自動起動</h4>
+
+        <p>/mnt/system/auto.shとして自動起動に使用できるスクリプトがBuildroot側で用意されているので、有り難く使わせてもらいましょう。以下を追記</p>
+        <pre><code>hostapd -B -iwlan0 /etc/hostapd.conf</code></pre>
+        
+        <p>MicroSDカードをアンマウントし、Duoに挿入して起動します。</p>
+        
+        <p>うまく行けばDuoがWiFiアクセスポイントとして他のWiFi対応機器のscanで見つかるはずです。</p>
+
+        <br>
+        
+        <h4>(おまけ)繋いでみた</h4>
+
+        <pre class="no-pre-space"><code>$ssh root@192.168.32.1
+            The authenticity of host '192.168.32.1 (192.168.32.1)' can't be established.
+            ED25519 key fingerprint is SHA256:1fuCsLqAyGYQgdq57kBuYbaWvIOhw5StKqqLoJ351Hc.
+            This key is not known by any other names.
+            Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+            Warning: Permanently added '192.168.32.1' (ED25519) to the list of known hosts.</code></pre>
+
+        <p>ためしにcpuinfo。</p>
+        
+        <pre class="no-pre-space"><code>[root@milkv-duo]~# cat /proc/cpuinfo
+            processor	: 0
+            hart		: 0
+            isa		: rv64imafdvcsu
+            mmu		: sv39
+            
+            [root@milkv-duo]~#</code></pre>
+
+        <p>これはなかなか応用が効きそうですね。カメラ付きロボットとか。</p>
+        
+    </main>
+
+    <footer>
+        <br><br>
+        <hr>
+        <br>
+        <font size="2">
+            <a href="../index.html">メインページ</a>
+            <a href="../crafts.html">もの作り</a>
+            <a href="../scrapbooks.html">スクラップブック</a>
+            <br>
+            <a href="../downloads.html">ダウンロード</a>
+            <a href="../bbs.html">BBS</a>
+            <a href="../about.html">このサイトについて</a>
+            <br>
+            <a href="../en/index.html">English site</a>
+            <br>
+            <p>© 2024 niwatori-chicken. All rights reserved.</p>
+        </font>
+        <br>
+    </footer>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            console.log(params.toString() === "")
+            return params;
+        }
+
+        function applyDarkMode() {
+            const params = getQueryParams();
+            if (params.get('mode') === 'dark') {
+                document.body.classList.add('dark-mode');
+                const links = document.querySelectorAll('a:not(.exclude-dark)');
+                links.forEach(link => {
+                    const url = new URL(link.href);
+                    url.searchParams.set('mode', 'dark');
+                    link.href = url.toString();
+                });
+                document.getElementById('switch-mode').href = location.href.replace("?mode=dark", "");
+            }
+            else if (params.toString() === "") {
+                document.getElementById('switch-mode').href = location.href + "?mode=dark";
+            }
+        }
+
+        applyDarkMode();
+    </script>
+</body>
+</html>

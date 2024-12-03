@@ -1,0 +1,21 @@
+pre {
+    margin: 1em 0;
+    padding: 1em;
+    /*border-radius: 5px;*/
+    background: #202020;
+    color: #d6f5d6;
+    overflow-x: auto;
+}
+  
+.dark-mode pre {
+    margin: 1em 0;
+    padding: 1em;
+    /*border-radius: 5px;*/
+    background: #869a86;
+    color: #000000;
+    overflow-x: auto;
+}
+
+.no-pre-space {
+    white-space: pre-line;
+}
