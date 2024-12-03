@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>niwatori-chickenのサイト</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header>
+        <h1>niwatori-chicken's website</h1>
+        <nav>
+            <table class="center" width="100%" border="1">
+                <tbody>
+                    <tr>
+                        <td align="center" width="30%"><a href="index.html">メインページ</a></td>
+                        <td align="center" width="30%"><a href="crafts.html">もの作り</a></td>
+                        <td align="center" width="30%"><a href="scrapbooks.html">スクラップブック</a></td>
+                        <td align="center" rowspan="2">
+                            <a href="index.html" id="switch-mode">
+                                <img src="imgs/essentials/switchmode.jpg" alt="モード切替" title="ダークモードとライトモードの切り替え" class="exclude-dark" width="48px">
+                            </a>
+                        </td>
+                        <td width align="center" rowspan="2">
+                            <a href="en/index.html">
+                                <img src="imgs/essentials/en.jpg" alt="Jump to English site" title="English site" width="48px">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" width="30%"><a href="downloads.html">ダウンロード</a></td>
+                        <td align="center" width="30%"><a href="bbs.html">BBS</a></td>
+                        <td align="center" width="30%"><a href="about.html">このサイトについて</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        <h2 class="center">もの作り</h2>
+        <p>制作物の置き場、あるいは墓場です。</p>
+        <p>気に入ってくれたものがあれば共有していただければ幸いです。</p>
+        <hr>
+        <h3>Milk-V DuoをWi-Fiアクセスポイントにする</h3>
+        <img src="imgs/duo-ap.jpg" alt="Milk-V Duoがモバイルバッテリーからの給電でWi-Fiアクセスポイントとして動作中">
+        <p>Wi-Fi APとして動作するMilk-V Duo。TP-LinkのW725Nドングルを装着し、モバイルバッテリーの給電で動作中。<br>消費電力はピーク1.5w程度で、廉価で小型なモバイルバッテリーでも12時間を超えて動作。</p>
+        <a href="crafts/milk-v_duo_ap.html">詳しく見る</a>
+
+    </main>
+
+
+    <footer>
+        <br><br>
+        <hr>
+        <br>
+        <font size="2">
+            <a href="index.html">メインページ</a>
+            <a href="crafts.html">もの作り</a>
+            <a href="scrapbooks.html">スクラップブック</a>
+            <br>
+            <a href="downloads.html">ダウンロード</a>
+            <a href="bbs.html">BBS</a>
+            <a href="about.html">このサイトについて</a>
+            <br>
+            <a href="en/index.html">English site</a>
+            <br>
+            <p>© 2024 niwatori-chicken. All rights reserved.</p>
+        </font>
+        <br>
+    </footer>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            console.log(params.toString() === "")
+            return params;
+        }
+
+        function applyDarkMode() {
+            const params = getQueryParams();
+            if (params.get('mode') === 'dark') {
+                document.body.classList.add('dark-mode');
+                const links = document.querySelectorAll('a:not(.exclude-dark)');
+                links.forEach(link => {
+                    const url = new URL(link.href);
+                    url.searchParams.set('mode', 'dark');
+                    link.href = url.toString();
+                });
+                document.getElementById('switch-mode').href = location.href.replace("?mode=dark", "");
+
+            }
+            else if (params.toString() === "") {
+                document.getElementById('switch-mode').href = location.href + "?mode=dark";
+            }
+        }
+
+        applyDarkMode();
+    </script>
+
+</body>
+</html>
