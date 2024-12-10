@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>niwatori-chickenのサイト</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="crafts_code.css">
+</head>
+<body>
+    <header>
+        <h1>niwatori-chicken's website</h1>
+        <nav>
+            <table class="center" width="100%" border="1">
+                <tbody>
+                    <tr>
+                        <td align="center" width="30%"><a href="../index.html">メインページ</a></td>
+                        <td align="center" width="30%"><a href="../crafts.html">もの作り</a></td>
+                        <td align="center" width="30%"><a href="../scrapbooks.html">スクラップブック</a></td>
+                        <td align="center" rowspan="2">
+                            <a href="../index.html" id="switch-mode">
+                                <img src="../imgs/essentials/switchmode.jpg" alt="モード切替" title="ダークモードとライトモードの切り替え" class="exclude-dark" width="48px">
+                            </a>
+                        </td>
+                        <td width align="center" rowspan="2">
+                            <a href="../en/index.html">
+                                <img src="../imgs/essentials/en.jpg" alt="Jump to English site" title="English site" width="48px">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" width="30%"><a href="../downloads.html">ダウンロード</a></td>
+                        <td align="center" width="30%"><a href="../bbs.html">BBS</a></td>
+                        <td align="center" width="30%"><a href="../about.html">このサイトについて</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+
+        <h2>LaTeXer Discord Bot</h2>
+
+        <br>
+
+        <img src="../imgs/latexer_bot_demo" alt="The bot rendering LaTeX">
+
+        <p>Discord上で数式を書くのが面倒くさかったので、Math modeのLaTeXを自動で描画して画像として出力するbotを作りました。</p>
+        <p>リポジトリはこちら：<a>https://github.com/niwatori-chicken/latexer-discord-bot</a></p>
+        <p>このbotはApache License 2.0に基づいてライセンスされます。</p>
+
+        <br>
+        
+        <h3>動かし方</h3>
+        <hr>
+        <p>Pythonと、Pythonライブラリのmatplotlib, discord.py, python-dotenvをインストールしておいてください。</p>
+        <p>また、動かすDiscord botのトークンを取得しておいてください。</p>
+        <br>
+        <p>適当なディレクトリを用意して(git cloneする場合は勝手にディレクトリができるので必要ありません。)、main.pyをダウンロードします。<br>トークンの格納用に、同じディレクトリに".env"ファイルを作成して、以下のようにします。</p>
+        <p>.env</p>
+        <pre class="no-pre-space"><code>
+        TOKEN=トークン        
+        </code></pre>
+        <p>Pythonで実行します。</p>
+        <br>
+        
+
+    </main>
+
+    <footer>
+        <br><br>
+        <hr>
+        <br>
+        <font size="2">
+            <a href="../index.html">メインページ</a>
+            <a href="../crafts.html">もの作り</a>
+            <a href="../scrapbooks.html">スクラップブック</a>
+            <br>
+            <a href="../downloads.html">ダウンロード</a>
+            <a href="../bbs.html">BBS</a>
+            <a href="../about.html">このサイトについて</a>
+            <br>
+            <a href="../en/index.html">English site</a>
+            <br>
+            <p>© 2024 niwatori-chicken. All rights reserved.</p>
+        </font>
+        <br>
+    </footer>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            console.log(params.toString() === "")
+            return params;
+        }
+
+        function applyDarkMode() {
+            const params = getQueryParams();
+            if (params.get('mode') === 'dark') {
+                document.body.classList.add('dark-mode');
+                const links = document.querySelectorAll('a:not(.exclude-dark)');
+                links.forEach(link => {
+                    const url = new URL(link.href);
+                    url.searchParams.set('mode', 'dark');
+                    link.href = url.toString();
+                });
+                document.getElementById('switch-mode').href = location.href.replace("?mode=dark", "");
+            }
+            else if (params.toString() === "") {
+                document.getElementById('switch-mode').href = location.href + "?mode=dark";
+            }
+        }
+
+        applyDarkMode();
+    </script>
+</body>
+</html>
