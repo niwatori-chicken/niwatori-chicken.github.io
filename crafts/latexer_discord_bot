@@ -43,7 +43,7 @@
 
         <br>
 
-        <img src="../imgs/latexer_bot_demo" alt="The bot rendering LaTeX">
+        <img src="../imgs/latexer_bot_demo.jpg" alt="The bot rendering LaTeX">
 
         <p>Discord上で数式を書くのが面倒くさかったので、Math modeのLaTeXを自動で描画して画像として出力するbotを作りました。</p>
         <p>リポジトリはこちら：<a>https://github.com/niwatori-chicken/latexer-discord-bot</a></p>
